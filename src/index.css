@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.signup{
+    background-color:  rgb(20, 20, 33);
+}
