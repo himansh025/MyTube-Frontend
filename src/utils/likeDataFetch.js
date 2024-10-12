@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { mainName , request , token} from '../constants'
+import { token} from '../constants'
 
 const toggleVideoLike = async(videoId)=>{
     console.log("toggle video",videoId);
@@ -36,7 +36,7 @@ const toggleTweetLike = async(tweetId)=>{
 const getLikedVideos = async()=>{
     try {
         const response = await axios.get(`/api/like/getLikedVideos`,{ headers: { Authorization: `Bearer ${token}`}});  
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching getting all liked videos', error);
@@ -44,11 +44,11 @@ const getLikedVideos = async()=>{
 }
 
 const getLikesOfVideoById = async(videoId)=>{
-    console.log("videoid like fetch",videoId);
+    // console.log("videoid like fetch",videoId);
     
     try {
         const response = await axios.get(`/api/likes/likedvideosbyid/${videoId}`,{ headers: { Authorization: `Bearer ${token}`}});  
-        console.log(response.data);
+        // console.log("backend fetch req of like",response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching getting likes of the video', error);

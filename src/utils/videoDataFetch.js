@@ -47,7 +47,7 @@ const getUserChannelProfile = async (username) => {
 
 const incrementView = async (videoId) => {
   try {
-    const response = await fetch(`/api/videos/${videoId}/incrementView`, { method: 'POST' });
+    const response = await fetch(`/api/videos/incrementView/${videoId}`, { method: 'POST' });
     if (!response.ok) throw new Error('Failed to increment view count');
     return response.json();
   } catch (error) {
@@ -57,7 +57,7 @@ const incrementView = async (videoId) => {
 };
 
  const getAVideo = async (videoId) => {
-  console.log("video fetch id",videoId);
+  // console.log("video fetch id",videoId);
   
   try {
     const response =await axios.get(`/api/videos/getvideobyid/${videoId}`);
@@ -71,17 +71,17 @@ const incrementView = async (videoId) => {
 };
 const publishVideo = async (data) => {
   const token = localStorage.getItem("accessToken");
-  console.log("Token:", token);
+  // console.log("Token:", token);
 
   try {
-    console.log("Video data:", data); 
+    // console.log("Video data:", data); 
     const formData = new FormData();
 formData.append("videofile", data.videofile[0]);
 formData.append("thumbnail", data.thumbnail[0]);
 formData.append("title", data.title);
 formData.append("description", data.description);
 // formData.append("isPublished",data.isPublished);
-console.log(formData);
+// console.log(formData);
 
     
 // this give the error 
@@ -96,7 +96,7 @@ console.log(formData);
       }
     });
 
-    console.log("Video uploaded successfully:", response);
+    // console.log("Video uploaded successfully:", response);
     return response;
   } catch (error) {
     console.log(error);

@@ -1,37 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CgTv } from 'react-icons/cg';
-import { FaSearch, FaBell, FaUserCircle, FaBars, FaYoutube } from 'react-icons/fa';
-import { MdWatch } from 'react-icons/md';
+import { FaSearch, FaUserCircle } from 'react-icons/fa';
+// import { useNavigate } from 'react-router-dom';
 
 const Navbar2 = () => {
+  // const [showDropdown, setShowDropdown] = useState(false);
+  // const navigate = useNavigate();
+
+  // const handleUserCircleClick = () => {
+  //   setShowDropdown(!showDropdown); // Toggle the dropdown visibility
+  // };
+
+  // const handleLogout = () => {
+  //   setShowDropdown(false);  // Close the dropdown
+  //   navigate("/logout");     // Redirect to the logout route
+  //   console.log('User logged out');
+  // };
+
   return (
-    <nav className="flex items-center justify-between bg-white px-4 py-2 shadow-md">
-      {/* Left section */} 
+    <nav className="flex items-center justify-between bg-white px-4 py-2 fixed top-0 left-0 w-full z-10 shadow-md">
+      {/* Left section with logo */}
       <div className="flex items-center">
-        {/* <FaBars className="text-2xl hidden md:block cursor-pointer mr-4" /> */}
-        <div className="flex items-center text-gray-500">
-          <CgTv className="text-3xl" />
-          <span className="ml-1 text-xl font-bold">WatchTv</span>
-        </div>
+        <CgTv className="text-red-600 text-3xl" />
+        <span className="ml-2 text-xl font-bold text-red-600">WatchTv</span>
       </div>
 
       {/* Search bar */}
-      {/* <div className="flex items-center flex-1 mx-4">
+      <div className="flex items-center mx-4 w-full sm:w-auto lg:w-1/3">
         <input
           type="text"
           placeholder="Search"
-          className="flex-grow px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none"
+          className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none"
         />
-        <button className="px-4 py-2 bg-gray-200 border border-gray-300 rounded-r-full hover:bg-gray-300">
+        <button className="ml-2 p-2 bg-gray-200 border border-gray-300 rounded-full hover:bg-gray-300">
           <FaSearch />
         </button>
-      </div> */}
-
-      {/* Right section */}
-      <div className="flex items-center space-x-4">
-        {/* <FaBell className="text-2xl mx-1 cursor-pointer" /> */}
-        <FaUserCircle className=" hidden md:block text-2xl cursor-pointer" />
       </div>
+
+      {/* Right section for user-related icons */}
+      {/* Uncomment this if you need the user dropdown functionality */}
+      {/* <div className="relative">
+        <FaUserCircle
+          onClick={handleUserCircleClick}
+          className="text-3xl cursor-pointer"
+        />
+        {showDropdown && (
+          <div className="absolute right-0 mt-2 w-32 bg-white shadow-md rounded-lg py-2">
+            <button
+              className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </div> */}
     </nav>
   );
 };

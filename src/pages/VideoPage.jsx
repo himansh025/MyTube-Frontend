@@ -13,8 +13,8 @@ import { useForm } from "react-hook-form";
 const VideoPage = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showComments, setshowComments] = useState(false);
-  const [video, setvideo] = useState({});
-  const [owner, setOwner] = useState({});
+  // const [video, setvideo] = useState({});
+  // const [owner, setOwner] = useState({});
   const [commentList, setcommentList] = useState([]);
   const [reload, setreload] = useState(0);
   const { register, handleSubmit, reset } = useForm();
@@ -26,53 +26,25 @@ const VideoPage = () => {
 
   useEffect(() => {
     loadFunc();
-    if (owner) {
-      // console.log("Updated owner:", owner);
-    }
+   
     window.addEventListener("resize", handleWindowResize);
 
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
-  }, [videoId, reload,owner]);
+  }, [videoId, reload]);
 
-  // useEffect(() => {
-  //   // Log the owner after it has been updated
- 
-  // }, [owner]);
-
-  // async function getVideo(videoId) {
-  //   const video = await getAVideo(videoId);
-  //   if (video) {
-  //     setvideo(video?.data);
-  //     await getowner(video?.data);
-  //   }
-  // }
-
-  // async function getowner(username) {
-  //   // console.log("username",username);
-    
-  //   const ownerid = username.data.owner;
-  //   const ownerData = await getUserChannelProfile(ownerid);
-  //   if (ownerData) {
-  //     // console.log(ownerData.data._id, "data");
-  //     setOwner(ownerData?.data);
-  //     // setvideo()
-  //     // Set the entire owner data, not just _id
-  //   }
-  // }
 
   async function comments(videoId) {
     const page = 1;
     const limits = 10;
-    console.log(" vid for comment ",videoId);
+    // console.log(" vid for comment ",videoId);
     
     const data = await getVideoComments(videoId, { page, limits });
     setcommentList(data.data);
   }
 
   async function loadFunc() {
-    // await getVideo(videoId);
    await comments(videoId)
   }
 

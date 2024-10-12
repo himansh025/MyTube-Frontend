@@ -17,7 +17,7 @@ const SideList = (
     setvideoList(data.data.docs);
     return data.data.docs;
   }
-  console.log(videoList)
+  // console.log(videoList)
 
   useEffect(() => {
     pageData();

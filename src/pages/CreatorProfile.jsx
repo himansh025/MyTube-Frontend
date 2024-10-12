@@ -17,7 +17,21 @@ const CreatorProfile = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [reload, setReload] = useState(0);
   const { username } = useParams();
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.auth.user);
+ 
+  console.log("user at edit profile",username);
+  
+  const check=async(username)=>{
+    console.log("inside fnc",username);
+    
+    const getchannelowner= await getUserChannelProfile(username)
+    console.log("channel details of v owner",getchannelowner);
+if(getchannelowner.data?.username==username){
+  setIsOwner(true);
+}else{
+  console.log("not happen"); 
+}    
+  }
 
   const handleSubmitAvatar = async () => {
     const input = document.querySelector("#avatar");
@@ -79,16 +93,17 @@ const CreatorProfile = () => {
 
   useEffect(() => {
     fetchData();
+    check(username);
   }, [username, reload]);
 
   const options = [
     { name: "Videos", slug: "videos" },
-    { name: "Tweets", slug: "tweets" },
-    { name: "Playlists", slug: "playlists" },
+    // { name: "Tweets", slug: "tweets" },
+    // { name: "Playlists", slug: "playlists" },
   ];
 
   return (
-    <div className="w-full bg-blue-300">
+    <div className="w-full bg-slate-800">
       <div className="w-full overflow-hidden max-h-44 relative">
         <img
           className="w-full object-cover h-full"
@@ -153,10 +168,10 @@ const CreatorProfile = () => {
             {!isOwner && <Button content="Subscribe" />}
             {isOwner && (
               <>
-                <Link to="/home/dashboard">
+                <Link to="/dashboard">
                   <Button content="Dashboard" />
                 </Link>
-                <Link to="/home/customizeChannel">
+                <Link to="/customizeChannel">
                   <Button content="Customize channel" />
                 </Link>
               </>
@@ -165,11 +180,11 @@ const CreatorProfile = () => {
         </div>
       </div>
 
-      <div className="flex justify-around text-white text-xl font-semibold py-3">
+      <div className="flex justify-around  text-white text-xl font-semibold py-3">
         {options.map((option) => (
           <Link
             key={option.slug}
-            to={`/home/creatorProfile/${profileData?.username}/${option.slug}`}
+            to={`/creatorProfile/${profileData?.username}/${option.slug}`}
             className="hover:text-blue-400 transition"
           >
             {option.name}

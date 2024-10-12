@@ -1,13 +1,13 @@
 import axios from 'axios'
-import { mainName , request , token} from '../constants'
+import { token} from '../constants'
 
 
-const getVideoComments = async(videoid , params)=>{
+const getVideoComments = async(videoid )=>{
     try {
-        console.log("comment fetch",videoid,params);
+        // console.log("comment fetch",videoid,params);
         
         const response = await axios.get(`/api/comments/allcomments/${videoid}`);  
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching getting video comments', error);

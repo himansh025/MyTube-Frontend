@@ -13,7 +13,7 @@ function Videocard({ data }) {
   // const [videoData,setVideodata]= useState();
   
 
-// console.log("videocard data",data);
+console.log("videocard data",data);
 
 
   const handleWindowResize = () => {
@@ -57,6 +57,8 @@ function Videocard({ data }) {
     }
     if (data?._id) {
       // console.log("owneraaya?",data?._id);
+      // console.log("user for videocard",user);
+      
       // getOwner(data?._id);
     }
     window.addEventListener("resize", handleWindowResize);
@@ -103,7 +105,7 @@ function Videocard({ data }) {
             </div>
 
             <div className="text-gray-500 text-sm font-bold pt-1">
-              {videoOwner?.fullName || "Unknown Owner"}
+              {data?.fullName || "Unknown Owner"}
             </div>
             <div className="flex text-gray-500 text-sm gap-3">
               <div>{data?.views || 0} views</div>

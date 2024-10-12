@@ -1,73 +1,78 @@
 import React from "react";
-import { IoMdCreate, IoMdHome, IoMdLock, IoMdReturnLeft } from "react-icons/io";
+import { IoMdCreate, IoMdHome, IoMdLogIn } from "react-icons/io";
 import { CgLogOut, CgProfile } from "react-icons/cg";
-import { IoMdAddCircle } from "react-icons/io";
 import { FaThList } from "react-icons/fa";
 import { MdVideoCall } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { IoMdLogIn } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const status = useSelector((state) => state.auth.status);
-  const user = useSelector((state)=>state.auth.user);
-  // console.log(user)
+  const user = useSelector((state) => state.auth.user);
+
   return (
-    <div className="h-screen  bg-gray-950">
-      <div className="text-white text-3xl flex flex-col gap-5  w-20 p-2 justify-around items-center">
-        <div className="flex flex-col items-center">
-          <Link to={"/"}>
+    <div className="fixed h-screen w-24 left-0 z-10 bg-gray-950">
+      <div className="text-white text-3xl flex flex-col gap-5 w-full p-2 items-center">
+        {/* Home */}
+        <div className="flex flex-col items-center mb-4">
+          <Link to="/">
             <IoMdHome />
-          </Link>{" "}
+          </Link>
           <div className="font-semibold text-sm">Home</div>
         </div>
+
         {status ? (
           <>
-            <div className="text-4xl text-violet-600 font-semibold">
-              <Link to={"/PostTweet"}>
-                <IoMdAddCircle />
+            {/* Upload Video */}
+            <div className="flex flex-col items-center mb-4">
+              <Link to="/UploadVideo">
+                <MdVideoCall className="text-4xl text-violet-600" />
               </Link>
+              <div className="font-semibold text-sm">Upload</div>
             </div>
-            <div className="text-4xl text-violet-600 pb-2 flex items-center justify-center">
-              <Link to={"UploadVideo"}>
-                <MdVideoCall />
-              </Link>
-            </div>
-            <div className="flex flex-col items-center">
+
+            {/* Subscribed */}
+            <div className="flex flex-col items-center mb-4">
               <Link to="/subscribed">
                 <FaThList />
               </Link>
               <div className="font-semibold text-sm">Subscribed</div>
             </div>
-            <div className="flex flex-col items-center">
+
+            {/* Profile */}
+            <div className="flex flex-col items-center mb-4">
               <Link to={`/creatorProfile/${user.username}`}>
                 <CgProfile />
               </Link>
               <div className="font-semibold text-sm">Profile</div>
             </div>
-            <div className="flex flex-col items-center">
-              <Link to={`/logout`}>
+
+            {/* Logout */}
+            <div className="flex flex-col items-center mb-4">
+              <Link to="/logout">
                 <CgLogOut />
               </Link>
-              <div className="font-semibold text-sm">logout</div>
+              <div className="font-semibold text-sm">Logout</div>
             </div>
           </>
         ) : (
-          <div className="flex  flex-col items-center">
-           <div className="m-1">
-             <Link to="/login">
-              <IoMdLogIn />
-            </Link>{" "}
-            <div className="font-semibold text-sm">Login</div>
+          <div className="flex flex-col items-center gap-4">
+            {/* Login */}
+            <div className="flex flex-col items-center">
+              <Link to="/login">
+                <IoMdLogIn />
+              </Link>
+              <div className="font-semibold text-sm">Login</div>
             </div>
-            <div className="m-1">
-            <Link to="/signup">
-              <IoMdCreate />
-            </Link>{" "}
-            <div className="font-semibold text-sm">Signup</div>
+
+            {/* Signup */}
+            <div className="flex flex-col items-center">
+              <Link to="/signup">
+                <IoMdCreate />
+              </Link>
+              <div className="font-semibold text-sm">Signup</div>
             </div>
           </div>
-          
         )}
       </div>
     </div>

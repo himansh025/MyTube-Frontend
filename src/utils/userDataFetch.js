@@ -103,16 +103,16 @@ const getCurrentUser = async () => {
 };
 const getUserById = async (userId) => {
   try {
-    console.log("userId:", userId);
+    // console.log("userId:", userId);
     
     const token = localStorage.getItem('accessToken');
     const response = await axios.get(`/api/users/c:${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });  
-    console.log("Response data:", response.data);
+    // console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    // console.error('Error fetching user data:', error);
     throw error; // Optional: re-throw to handle it elsewhere
   }
 };
@@ -126,7 +126,7 @@ const updateAccountDetails = async(data)=>{
             }
           }
         );  
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching updateAccountDetails data:', error);
@@ -137,7 +137,7 @@ const updateUserAvatar = async (data)=>{
     try {
       const token = localStorage.getItem('accessToken');
         const response = await axios.patch(`/api/users/avatar` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching updateUserAvatar data:', error);
@@ -167,20 +167,19 @@ const updateCoverImage = async (data) => {
 }
 
 
-const getUserChannelProfile = async (userid) => {
-  console.log("username for channelprofile",userid);
+const getUserChannelProfile = async (username) => {
+  // console.log("username for channelprofile to get user channel detials",userid);
   try {
     const token = localStorage.getItem('accessToken');
-console.log(token);
     if (!token) {
       throw new Error('Access token not found');
     }
 
-    const response = await axios.get(`/api/users/c/${userid}`, {
+    const response = await axios.get(`/api/users/c/${username}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log('userchannel detil fetch success:', response.data);
+    // console.log('userchannel detil fetch success:', response.data);
     return response.data; // Assuming response.data contains the desired data
   } catch (error) {
     console.log('Error fetching user channel profile:', error);
@@ -189,6 +188,26 @@ console.log(token);
   }
 };
 
+
+const getUserChannedetails=async(username)=>
+{
+  try {
+    const token = localStorage.getItem('accessToken');
+// console.log(token);
+    if (!token) {
+      throw new Error('Access token not found');
+    }
+
+    const response = await axios.get(`/api/users/c/${username}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // console.log('userchannel detil fetch success:', response.data);
+    return response.data; // Assuming response.data contains the desired data
+  } catch (error) {
+    console.log('Error fetching user channel profile:', error);
+
+  
+   } }
 
 
 
@@ -242,5 +261,6 @@ export {
     getWatchHistory,
     refreshAccessToken,
     getUserById,
+    getUserChannedetails,
     getUserChannelProfilebyusername
 }

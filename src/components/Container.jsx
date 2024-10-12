@@ -6,7 +6,7 @@ import { getUserChannelProfile } from "../utils/userDataFetch.js";
 
 function Container() {
   const [videoList, setVideoList] = useState([]);
-  const status = useSelector((state) => state.auth.status);
+  // const status = useSelector((state) => state.auth.status);
   const user1 = useSelector((state) => state.auth.user);
 
 // const pagedata= async()=>{
@@ -22,16 +22,16 @@ function Container() {
 
   const pageData = async () => {
     let data = [];
-    console.log("user",user1);
+    // console.log("user sgya",user1);
     
     if (user1) {
       try {
-        const user = await getUserChannelProfile(user1._id);
-       console.log("userss",user);
+        const user = await getUserChannelProfile(user1?.username);
+      //  console.log("userss",user);
        
         if (user?.data) {
           data = await getAllVideos({ p: 1, l: 10,user:user.data._id});
-          console.log("data",data);
+          // console.log("data",data);
           
           setVideoList(data?.data.docs || []);
         }
@@ -54,7 +54,7 @@ function Container() {
   }, [user1]);
 
   return (
-    <div className="w-full h-full flex gap-7 bg-slate-800 flex-wrap mx-auto">
+    <div className="w-full  h-full flex gap-7 border-2 rounded-md border-white py-4 bg-slate-800 flex-wrap mx-auto">
       {Array.isArray(videoList) &&
         videoList.map((video, index) => <Videocard key={index} data={video} />)}
     </div>

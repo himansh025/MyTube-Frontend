@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IoMdHome, IoMdLogIn } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
-import { IoMdAddCircle } from "react-icons/io";
+
+// import { IoMdAddCircle } from "react-icons/io";
+import { CgLogOut, CgProfile } from "react-icons/cg";
 import { FaRegListAlt } from "react-icons/fa";
 import { MdVideoFile } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -19,9 +20,9 @@ const Bottomside = () => {
   }, [user]);
 
   return (
-    <div className="w-full flex bg-gray-900 z-90">
-      <div className="text-white text-2xl flex w-full justify-around items-center">
-        <div className="flex flex-col items-center">
+    <div className="w-full flex  bg-gray-900 z-90">
+      <div className="text-white text-2xl flex  w-full justify-around items-center">
+        <div className="flex flex-col  items-center">
           <Link to="/">
             <IoMdHome />
           </Link>
@@ -29,7 +30,7 @@ const Bottomside = () => {
         </div>
         {status ? (
           <>
-            <div className="text-3xl text-violet-600 pb-2 flex items-center justify-center">
+            <div className="text-3xl text-violet-300  flex items-center justify-center">
               <Link to="/UploadVideo">
                 <MdVideoFile />
                 <p className="text-sm">Upload</p>
@@ -42,6 +43,7 @@ const Bottomside = () => {
               </Link>
               <div className="font-semibold text-sm">Subscribed</div>
             </div>
+
             <div className="flex flex-col items-center">
               <Link to={`/creatorProfile/${user.username}`}>
                 <img
@@ -51,6 +53,8 @@ const Bottomside = () => {
                 />
               </Link>
               <div className="font-semibold text-sm">{user.username}</div>
+
+          
             </div>
           </>
         ) : (
