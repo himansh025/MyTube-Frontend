@@ -38,6 +38,8 @@ const VideoCardList = ({ video }) => {
 
   const getOwner = async (userId) => {
     const owner = await getUserById(userId);
+    console.log("is owner",owner);
+    
     setOwner(owner.data);
   };
 
@@ -75,7 +77,7 @@ const VideoCardList = ({ video }) => {
           {shortenTitle(first, getMaxTitleLength())}
         </div>
         <div className="text-gray-500 text-sm font-bold">
-          {owner ? owner.fullName : "Loading..."}
+          {video? video.fullName : "Loading..."}
         </div>
         <div className="flex text-gray-500 text-sm gap-3">
           <span>{video.views} views</span>
