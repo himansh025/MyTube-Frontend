@@ -48,7 +48,7 @@ const VideoCardList = ({ video }) => {
   };
 
   useEffect(() => {
-    getOwner(video.owner);
+    // getOwner(video.owner);
 
     const dateString = video.createdAt;
     if (dateString) {

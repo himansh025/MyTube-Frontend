@@ -7,7 +7,7 @@ const Dashboard = () => {
 
   async function getDashBoardData() {
     const data = await getChannelStats();
-    console.log("data", data);
+    // console.log("data", data);
     setdata(data?.data);
   }
 

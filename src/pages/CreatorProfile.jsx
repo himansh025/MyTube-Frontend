@@ -18,20 +18,20 @@ const CreatorProfile = () => {
   const [reload, setReload] = useState(0);
   const { username } = useParams();
   // const user = useSelector((state) => state.auth.user);
- 
-  console.log("user at edit profile",username);
-  
-  const check=async(username)=>{
-    console.log("inside fnc",username);
-    
-    const getchannelowner= await getUserChannelProfile(username)
-    console.log("channel details of v owner",getchannelowner);
-if(getchannelowner.data?.username==username){
-  setIsOwner(true);
-}else{
-  console.log("not happen"); 
-}    
-  }
+
+  // console.log("user at edit profile",username);
+
+  const check = async (username) => {
+    // console.log("inside fnc",username);
+
+    const getchannelowner = await getUserChannelProfile(username);
+    // console.log("channel details of v owner",getchannelowner);
+    if (getchannelowner.data?.username == username) {
+      setIsOwner(true);
+    } else {
+      console.log("not happen");
+    }
+  };
 
   const handleSubmitAvatar = async () => {
     const input = document.querySelector("#avatar");
@@ -49,7 +49,6 @@ if(getchannelowner.data?.username==username){
     }
   };
 
-
   const handleSubmitCoverImage = async () => {
     const input = document.querySelector("#coverImage");
     const file = input.files[0];
@@ -66,7 +65,8 @@ if(getchannelowner.data?.username==username){
     }
   };
 
-  const openCoverImageUpload = () => document.querySelector("#coverImage").click();
+  const openCoverImageUpload = () =>
+    document.querySelector("#coverImage").click();
   const openAvatarUpload = (e) => {
     e.preventDefault();
     document.querySelector("#avatar").click();
@@ -74,11 +74,11 @@ if(getchannelowner.data?.username==username){
 
   const fetchData = async () => {
     try {
-      console.log(username);
-      
+      // console.log(username);
+
       const response = await getUserChannelProfilebyusername(username);
-      console.log("response hai",response);
-    
+      // console.log("response hai", response);
+
       setProfileData(response.data);
       const owner = getCurrentUser();
       if (owner && owner._id === response.data._id) {
@@ -89,7 +89,6 @@ if(getchannelowner.data?.username==username){
     }
   };
   // console.log("isowner",isOwner);
-  
 
   useEffect(() => {
     fetchData();
@@ -116,7 +115,9 @@ if(getchannelowner.data?.username==username){
             className="absolute h-3 bottom-5  bg-red-500 mb-10 right-5 text-sm cursor-pointer"
           >
             <FaUserEdit />
-            <span className="text-white  bg-blue-950 p-1 font-semibold  rounded-lg">Edit</span>
+            <span className="text-white  bg-blue-950 p-1 font-semibold  rounded-lg">
+              Edit
+            </span>
           </div>
         )}
         <form hidden>
@@ -159,7 +160,7 @@ if(getchannelowner.data?.username==username){
             {profileData?.fullname || "User Name"}
           </div>
           <div className="flex gap-3 text-white px-5 py-3 flex-wrap">
-          <div>@{(profileData?.username || "username").toUpperCase()}</div>•
+            <div>@{(profileData?.username || "username").toUpperCase()}</div>•
             <div>{profileData?.subscriberscount || 0} subscribers</div>•
             <div>{profileData?.videos?.length || 0} videos</div>
           </div>

@@ -46,7 +46,7 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
   const toggleLike = async () => {
     const likeAdded = await toggleVideoLike(videoId);
     if (likeAdded) {
-      console.log("Like toggled successfully");
+      // console.log("Like toggled successfully");
       setreload((prev) => prev + 1);
     }
   };
@@ -74,7 +74,7 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
   const incView = async () => {
     try {
       const viewData = await incrementView(videoId);
-      console.log("check views at video page", viewData);
+      // console.log("check views at video page", viewData);
       setviews(viewData.data.views);
     } catch (error) {
       console.error("Error incrementing view:", error);
@@ -104,7 +104,7 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
             className="w-full h-auto rounded-lg border-2 border-white max-h-96 lg:max-h-[600px]"
             poster={thumbnail || video?.thumbnail}
             controls
-            autoPlays
+            autoPlay
             src={videoSrc || video?.videofile}
             style={{ objectFit: "cover" }}
           >

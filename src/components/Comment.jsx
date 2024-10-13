@@ -1,40 +1,50 @@
 import React, { useEffect, useState } from "react";
-
-import { AiFillLike, AiTwotoneWallet } from "react-icons/ai";
+import { AiFillLike } from "react-icons/ai";
 import { getUserById } from "../utils/userDataFetch";
 import { getLikesOfCommentById, toggleCommentLike } from "../utils/likeDataFetch";
 
-const Comment = ({ data }) => {
-  // console.log(data)
-  const [username, setusername] = useState("");
-  const [avatar, setavatar] = useState("");
-  const [timeline, settimeline] = useState("");
-  const [numberOfLikes, setnumberOfLikes] = useState([]);
-  const [reload, setreload] = useState(0);
+const Comment = ({ data,ownerName }) => {
+  const [username, setUsername] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [timeline, setTimeline] = useState("");
+  const [numberOfLikes, setNumberOfLikes] = useState([]);
+  const [reload, setReload] = useState(0);
+  // const [ownerName, setOwnerName] = useState(""); // Add state for owner name
+console.log("owner at comment",ownerName);
 
-  console.log(data)
-
+  // Load user info, likes, and other data
   async function loadFunc() {
-    const username = await getUserById(data.owner);
-    // console.log(username.data.username)
-    setusername(username.data.username);
-    setavatar(username.data.avatar);
-    getLikes(data._id);
+    // const user = await getUserById(data.owner);
+    setUsername(ownerName.fullname);
+    setAvatar(ownerName.avatar);
+    getLikes(ownerName._id);
   }
 
+  // Fetch the owner's name and update state
+  // const fetchOwnerName = async (id) => {
+  //   console.log("id",id);
+    
+  //   const owner = await getUserById(id);
+  //   console.log("owner check comment",owner);
+    
+  //       setOwnerName(owner?.data?.fullname); // Store resolved owner name in state
+  // };
 
-  const getLikes = async(commentId)=>{
+  // Get likes for the comment
+  const getLikes = async (commentId) => {
     const likes = await getLikesOfCommentById(commentId);
-    setnumberOfLikes(likes.data);
-  }
+    setNumberOfLikes(likes.data);
+  };
 
+  // Toggle like functionality
   const toggleLike = async () => {
     const like = await toggleCommentLike(data._id);
     if (like) {
-      setreload((prev) => prev + 1);
+      setReload((prev) => prev + 1);
     }
   };
 
+  // Calculate time difference
   function timeDifference(date1, date2 = new Date()) {
     const difference = date2.getTime() - date1.getTime();
     const seconds = Math.floor(difference / 1000);
@@ -59,37 +69,35 @@ const Comment = ({ data }) => {
     }
   }
 
+  // Load data when component mounts or when reload state changes
   useEffect(() => {
     loadFunc();
+    // fetchOwnerName(data.owner); // Fetch the owner's name on mount
     const dateString = data?.createdAt;
     if (dateString) {
       const dateObject = new Date(dateString);
       const formattedDate = timeDifference(dateObject);
-      // console.log(formattedDate);
-      settimeline(formattedDate);
+      setTimeline(formattedDate);
     }
   }, [reload]);
 
   return (
-    <div className="w-full flex  bg-gray-900 p-2 text-white gap-3 m-4">
+    <div className="w-full flex bg-gray-900 p-2 text-white gap-3 m-4">
       <div className="overflow-hidden w-9 h-min mt-2 rounded-full">
         <img className="object-fit w-full" src={avatar} alt="" />
       </div>
       <div className="pt-1">
         <div className="flex items-center gap-3">
-          <div className="font-semibold ">{username}</div>
-          <div className="text-gray-400 text-sm">
-            {timeline}
-            {/* createdat */}
-          </div>
+          <div className="font-semibold ">{username}</div> {/* Render owner name from state */}
+          <div className="text-gray-400 text-sm">{timeline}</div>
         </div>
         <div className="p-3 text-sm">{data.content}</div>
         <div>
-          <div className="flex  py-2 items-center text-white text-smm px-4 rounded-full  bg-gray-800 gap-2 w-min">
+          <div className="flex py-2 items-center text-white text-smm px-4 rounded-full bg-gray-800 gap-2 w-min">
             <div onClick={toggleLike}>
               <AiFillLike />
             </div>
-            <div className="font-semibold text-sm ">{numberOfLikes.length}</div>
+            <div className="font-semibold text-sm">{numberOfLikes.length}</div>
           </div>
         </div>
       </div>

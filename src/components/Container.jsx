@@ -31,7 +31,7 @@ function Container() {
        
         if (user?.data) {
           data = await getAllVideos({ p: 1, l: 10,user:user.data._id});
-          console.log(" is data",data);
+          // console.log(" is data",data);
           
           setVideoList(data?.data.docs || []);
         }

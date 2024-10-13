@@ -9,7 +9,7 @@ const registerUser = async (formData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error registering user:', error);
@@ -36,11 +36,11 @@ const loginUser = async(formData)=>{
 const logoutUser = async()=>{
     try {
       const token = localStorage.getItem('accessToken');
-      console.log(document.cookie.includes('accessToken'))
+      // console.log(document.cookie.includes('accessToken'))
       // console.log(token)
         // console.log(formData)
         const response = await axios.post(`/api/users/logout` , {token} ,{ headers: { Authorization: `Bearer ${token}`}});  
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching logout data:', error);
@@ -54,7 +54,7 @@ const refreshAccessToken = async()=>{
       // console.log(token)
       // console.log(formData)
       const response = await axios.post(`/api/users/refreshtoken`,{ headers: { Authorization: `Bearer ${token}`}});  
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Error fetching logout data:', error);
@@ -66,9 +66,9 @@ const refreshAccessToken = async()=>{
 const changePassword = async(data)=>{
     try {
         const token = localStorage.getItem('accessToken');
-        console.log(data)
+        // console.log(data)
         const response = await axios.post(`/api/users/change-password` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching changePassword data:', error);
@@ -92,7 +92,7 @@ const getCurrentUser = async () => {
       }
     });
     
-    console.log('Current user data:', response);
+    // console.log('Current user data:', response);
     return response.data;
 
   } catch (error) {
@@ -101,9 +101,29 @@ const getCurrentUser = async () => {
     // throw error; // Optional: rethrow the error if you need to handle it elsewhere
   }
 };
+
+
+
+const userId = async (userId) => {
+  try {
+    console.log("userId:", userId);
+    
+    const token = localStorage.getItem('accessToken');
+    const response = await axios.get(`/api/users/m/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });  
+    console.log("Response data:", response);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error; // Optional: re-throw to handle it elsewhere
+  }
+};
+
+
 const getUserById = async (userId) => {
   try {
-    // console.log("userId:", userId);
+    console.log("userId:", userId);
     
     const token = localStorage.getItem('accessToken');
     const response = await axios.get(`/api/users/c:${userId}`, {
@@ -159,7 +179,7 @@ const updateCoverImage = async (data) => {
       }
     );
     
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error updating cover image:', error);
@@ -212,10 +232,10 @@ const getUserChannedetails=async(username)=>
 
 
 const getUserChannelProfilebyusername = async (username) => {
-  console.log("username for channelprofile",username);
+  // console.log("username for channelprofile",username);
   try {
     const token = localStorage.getItem('accessToken');
-console.log(token);
+// console.log(token);
     if (!token) {
       throw new Error('Access token not found');
     }
@@ -224,7 +244,7 @@ console.log(token);
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log('userchannel detil fetch success:', response.data);
+    // console.log('userchannel detil fetch success:', response.data);
     return response.data; // Assuming response.data contains the desired data
   } catch (error) {
     console.log('Error fetching user channel profile:', error);
@@ -262,5 +282,6 @@ export {
     refreshAccessToken,
     getUserById,
     getUserChannedetails,
-    getUserChannelProfilebyusername
+    getUserChannelProfilebyusername,
+    userId
 }

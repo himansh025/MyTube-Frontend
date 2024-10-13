@@ -13,7 +13,7 @@ function Videocard({ data }) {
   // const [videoData,setVideodata]= useState();
   
 
-console.log("videocard data",data);
+// console.log("videocard data",data);
 
 
   const handleWindowResize = () => {
