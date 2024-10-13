@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:3000", // Points to your backend server
+        target: "https://my-tube-client.vercel.app/", // Points to your backend server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, "/api/v1"), // Adjusts the path to match the backend's routing
       },
