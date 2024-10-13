@@ -7,12 +7,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://my-tube-server-psi.vercel.app/", // Points to your backend server
+        target: "https://my-tube-server-psi.vercel.app", // Vercel deployment URL for backend
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "/api/v1"), // Adjusts the path to match the backend's routing
+        rewrite: (path) => path.replace(/^\/api/, "/api/v1"), // Adjusts the path for API routes
       },
-    }
-    
-    
+    },
   },
 });
