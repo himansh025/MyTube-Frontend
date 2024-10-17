@@ -1,5 +1,4 @@
-// src/config.js
-
-const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000'; // Fallback for development
-
-export default apiUrl;
+const apiUrl = process.env.NODE_ENV === 'production' 
+  ? 'https://my-tube-server-psi.vercel.app' // Production URL
+  : 'http://localhost:3000'; // Local development URL
+export default apiUrl

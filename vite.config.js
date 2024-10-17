@@ -8,9 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: apiUrl, // Vercel deployment URL for backend
+        target: apiUrl,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "/api/v1"), // Adjusts the path for API routes
+        rewrite: (path) => path.replace(/^\/api/, "/api/v1"),
       },
     },
   },
