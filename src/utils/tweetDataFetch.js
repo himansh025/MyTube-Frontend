@@ -4,7 +4,7 @@ import { mainName , request} from '../constants'
 const createTweet = async(data)=>{
     try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.post(`/api/tweets/createTweet` , data,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.post(`/api/v1/tweets/createTweet` , data,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {
@@ -14,7 +14,7 @@ const createTweet = async(data)=>{
 
 const getUserTweets = async(username)=>{
     try {
-        const response = await axios.get(`/api/tweets/getUserTweets/${username}`);  
+        const response = await axios.get(`/api/v1/tweets/getUserTweets/${username}`);  
         console.log(response.data);
         return response.data;
       } catch (error) {
@@ -37,7 +37,7 @@ const updateTweet = async(tweetId , data)=>{
         // const response = await axios.get(`/api/tweets/updateTweet/${tweetId}` ,{...data , headers:{
         //     Authorization:`Bearer ${token}`
         // }});  
-        const response = await fetch(`/api/tweets/updateTweet/${tweetId}`, {
+        const response = await fetch(`/api/v1/tweets/updateTweet/${tweetId}`, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -58,7 +58,7 @@ const updateTweet = async(tweetId , data)=>{
 const deleteTweet = async(tweetId)=>{
     try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.post(`/api/tweets/deleteTweet/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.post(`/api/v1/tweets/deleteTweet/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {
@@ -69,7 +69,7 @@ const deleteTweet = async(tweetId)=>{
 const getTweetById = async(tweetId)=>{
     try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`/api/tweets/getTweetById/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`/api/v1/tweets/getTweetById/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {

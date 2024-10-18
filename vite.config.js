@@ -8,9 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: apiUrl,
+        target: apiUrl, // Directly proxy to apiUrl without rewriting the path
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "/api/v1"),
+        secure: false, // Ensure it's false if you're targeting an API with self-signed SSL cert
       },
     },
   },

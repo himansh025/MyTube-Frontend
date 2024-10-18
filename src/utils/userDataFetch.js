@@ -4,7 +4,7 @@ const registerUser = async (formData) => {
   console.log(formData);
 
   try {
-    const response = await axios.post(`/api/users/register`, formData, {
+    const response = await axios.post(`/api/v1/users/register`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -23,7 +23,7 @@ const loginUser = async(formData)=>{
     try {
 
         // console.log("formdata",formData)
-        const response = await axios.post(`/api/users/login` , formData , {
+        const response = await axios.post(`/api/v1/users/login` , formData , {
             withCredentials: true, // Include cookies
           });  
         // console.log("response",response.data);
@@ -39,7 +39,7 @@ const logoutUser = async()=>{
       // console.log(document.cookie.includes('accessToken'))
       // console.log(token)
         // console.log(formData)
-        const response = await axios.post(`/api/users/logout` , {token} ,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.post(`/api/v1/users/logout` , {token} ,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log(response.data);
         return response.data;
       } catch (error) {
@@ -53,7 +53,7 @@ const refreshAccessToken = async()=>{
       const token = localStorage.getItem('refreshToken');
       // console.log(token)
       // console.log(formData)
-      const response = await axios.post(`/api/users/refreshtoken`,{ headers: { Authorization: `Bearer ${token}`}});  
+      const response = await axios.post(`/api/v1/users/refreshtoken`,{ headers: { Authorization: `Bearer ${token}`}});  
       // console.log(response.data);
       return response.data;
     } catch (error) {
@@ -67,7 +67,7 @@ const changePassword = async(data)=>{
     try {
         const token = localStorage.getItem('accessToken');
         // console.log(data)
-        const response = await axios.post(`/api/users/change-password` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.post(`/api/v1/users/change-password` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log(response.data);
         return response.data;
       } catch (error) {
@@ -86,7 +86,7 @@ const getCurrentUser = async () => {
     }
     
     // Make the API request with authorization header
-    const response = await axios.get('/api/users/current-user', {
+    const response = await axios.get('/api/v1/users/current-user', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -109,7 +109,7 @@ const userId = async (userId) => {
     console.log("userId:", userId);
     
     const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`/api/users/m/${userId}`, {
+    const response = await axios.get(`/api/v1/users/m/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });  
     console.log("Response data:", response);
@@ -126,7 +126,7 @@ const getUserById = async (userId) => {
     console.log("userId:", userId);
     
     const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`/api/users/c:${userId}`, {
+    const response = await axios.get(`/api/v1/users/c:${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });  
     // console.log("Response data:", response.data);
@@ -140,7 +140,7 @@ const getUserById = async (userId) => {
 const updateAccountDetails = async(data)=>{
     try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.patch(`/api/users/update-account` , data ,{ headers:
+        const response = await axios.patch(`/api/v1/users/update-account` , data ,{ headers:
            {
              Authorization: `Bearer ${token}`
             }
@@ -156,7 +156,7 @@ const updateAccountDetails = async(data)=>{
 const updateUserAvatar = async (data)=>{
     try {
       const token = localStorage.getItem('accessToken');
-        const response = await axios.patch(`/api/users/avatar` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.patch(`/api/v1/users/avatar` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log(response.data);
         return response.data;
       } catch (error) {
@@ -169,7 +169,7 @@ const updateCoverImage = async (data) => {
     const token = localStorage.getItem('accessToken');
     
     const response = await axios.patch(
-      `/api/users/update-cover`,  // Fixed URL path
+      `/api/v1/users/update-cover`,  // Fixed URL path
       data,
       {
         headers: {
@@ -195,7 +195,7 @@ const getUserChannelProfile = async (username) => {
       throw new Error('Access token not found');
     }
 
-    const response = await axios.get(`/api/users/c/${username}`, {
+    const response = await axios.get(`/api/v1/users/c/${username}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -218,7 +218,7 @@ const getUserChannedetails=async(username)=>
       throw new Error('Access token not found');
     }
 
-    const response = await axios.get(`/api/users/c/${username}`, {
+    const response = await axios.get(`/api/v1/users/c/${username}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     // console.log('userchannel detil fetch success:', response.data);
@@ -240,7 +240,7 @@ const getUserChannelProfilebyusername = async (username) => {
       throw new Error('Access token not found');
     }
 
-    const response = await axios.get(`/api/users/only/${username}`, {
+    const response = await axios.get(`/api/v1/users/only/${username}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -259,7 +259,7 @@ const getWatchHistory = async ()=>{
     try {
         // console.log(data)
       const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`/api/users/history`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`/api/v1/users/history`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {
