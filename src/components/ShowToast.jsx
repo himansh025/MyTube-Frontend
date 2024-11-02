@@ -1,7 +1,7 @@
 // toastHelper.js
 import { toast } from 'react-toastify';
 
-const showToast = (action, itemName) => {
+const ShowToast = (action, itemName) => {
   switch (action) {
     case 'upload':
       toast.success(`${itemName} uploaded successfully!`);
@@ -18,4 +18,4 @@ const showToast = (action, itemName) => {
   }
 };
 
-export default showToast;
+export default ShowToast;

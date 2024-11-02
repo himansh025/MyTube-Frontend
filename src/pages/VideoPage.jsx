@@ -4,8 +4,8 @@ import SideList from "../components/SideList";
 import CommentList from "../components/CommentList";
 import Button from "../components/Button";
 import { useParams } from "react-router-dom";
-import { getAVideo } from "../utils/videoDataFetch";
-import { getUserChannelProfile } from "../utils/userDataFetch";
+// import { getAVideo } from "../utils/videoDataFetch";
+// import { getUserChannelProfile } from "../utils/userDataFetch";
 import { addComment, getVideoComments } from "../utils/comment.data.fetch";
 import Inputfield from "../components/Inputfield";
 import { useForm } from "react-hook-form";
@@ -14,7 +14,7 @@ const VideoPage = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showComments, setshowComments] = useState(false);
   // const [video, setvideo] = useState({});
-  // const [owner, setOwner] = useState({});
+  const [owner, setOwner] = useState({});
   const [commentList, setcommentList] = useState([]);
   const [reload, setreload] = useState(0);
   const { register, handleSubmit, reset } = useForm();
@@ -41,10 +41,11 @@ const VideoPage = () => {
     // console.log(" vid for comment ",videoId);
     
     const data = await getVideoComments(videoId, { page, limits });
-    setcommentList(data.data);
+    setcommentList(data?.data);
   }
 
   async function loadFunc() {
+    
    await comments(videoId)
   }
 

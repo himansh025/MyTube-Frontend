@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { getAVideo } from "../utils/videoDataFetch";
-import { getUserChannedetails } from "../utils/userDataFetch";
+import {  userIdowner } from "../utils/userDataFetch";
 import { MdThumbUp, MdShare } from "react-icons/md";
 import { CgPlayButton, CgPlayPause } from "react-icons/cg";
 import { toggleVideoLike, getLikesOfVideoById } from "../utils/likeDataFetch";
+import 'react-toastify/dist/ReactToastify.css';
+import {toggleSubscription} from '../utils/subscriptionDataFetch.js'
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Add navigation to user channel
 import { incrementView } from "../utils/videoDataFetch";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Video = ({ videoSrc, thumbnail, title, videoId }) => {
   const videoRef = useRef(null);
@@ -19,6 +22,18 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
   const [viewIncremented, setViewIncremented] = useState(false); // Track if view is incremented
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  const notify = () => {
+    toast.success("Subscribed!", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    });
+};
 
   const togglePlayPause = () => {
     if (isPlaying) {
@@ -29,13 +44,18 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
     setIsPlaying(!isPlaying);
   };
 
-  const check = async (username) => {
-    const getchannelowner = await getUserChannedetails(username);
-    if (getchannelowner.data?.username === username) {
-      setOwner(getchannelowner.data);
-    } else {
-      console.log("Channel owner not found.");
-    }
+  const getvideoowner = async (data) => {
+    console.log("Channel owner  .",data.owner);
+    const owner=data?.owner
+    const getchannelowner = await userIdowner(owner);
+    console.log("owner details  .",getchannelowner);
+
+    // setOwner(true)
+    // if (getchannelowner.data?.username === username) {
+      setOwner(getchannelowner);
+    // } else {
+    //   console.log("Channel owner not found.");
+    // }
   };
 
   const handleShare = () => {
@@ -59,13 +79,31 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
   async function fetchVideoDetails(videoId) {
     try {
       const videoData = await getAVideo(videoId);
+      console.log("vid data",videoData);
+      
       if (videoData?.data) {
         setVideo(videoData?.data.data);
       }
+      getvideoowner(videoData?.data?.data);
+      getlike(videoId);
+
     } catch (error) {
       console.error("Error fetching video details:", error);
     }
   }
+  const handleSubscribe = async (channel) => {
+    console.log("channelId:", channel);
+    if (user) {
+        const subscribeSuccess = await toggleSubscription(owner?._id);
+        if (subscribeSuccess) {
+            notify();  // Notify user on successful subscription
+            console.log("success", subscribeSuccess);
+        }
+    }
+    else{
+      navigate("/login")
+    }
+};
 
   const capitalizeWords = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -80,12 +118,16 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
       console.error("Error incrementing view:", error);
     }
   };
+  // console.log("check",   videoId);
 
   useEffect(() => {
     if (videoId) {
       fetchVideoDetails(videoId);
-      getlike(videoId);
-      check(user?.username);
+    
+      
+      // handlesubscribe(user?._id)
+     
+      
 
       // Only call incView once when the component mounts
       if (!viewIncremented) {
@@ -132,9 +174,17 @@ const Video = ({ videoSrc, thumbnail, title, videoId }) => {
                     : "No description available"}
                 </button>
 
-                <button className="px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">
-                  Subscribe
-                </button>
+               
+                <div>
+        <button
+            onClick={() => handleSubscribe(owner?._id)}
+            className="px-4 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+        >
+            Subscribe
+        </button>
+        
+        <ToastContainer />
+    </div>
               </div>
 
               <p className="text-sm text-gray-400">

@@ -2,10 +2,11 @@ import axios from 'axios'
 
 const toggleSubscription = async(channelId)=>{
     try {
+        console.log("checneel chi1 ,",channelId);
         
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`/api/v1/subs/togglesubs/${channelId}` ,{ headers: { Authorization: `Bearer ${token}`}});  
-        // console.log(response.data);
+        const response = await axios.post(`/api/v1/subs/togglesubs/${channelId}` ,{ headers: { Authorization: `Bearer ${token}`}});  
+        console.log(response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching while toggle subscription:', error);
@@ -24,11 +25,11 @@ const getUserChannelSubscribers = async(channelId)=>{
     }
 }
 
-const getSubscribedChannels = async(channelId)=>{
+const getSubscribedChannels = async(subscriberId)=>{
     try {
         const token = localStorage.getItem('accessToken');
         // console.log(token)
-        const response = await axios.get(`/api/v1/subs/getsubchannel/${channelId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`/api/v1/subs/getsubchannel/${subscriberId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log(response.data);
         return response.data;
       } catch (error) {

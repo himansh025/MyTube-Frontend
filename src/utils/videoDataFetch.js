@@ -1,32 +1,41 @@
 import axios from "axios";
 
 // Fetch all videos with pagination and query options
-const getAllVideos = async ({ p, l, q, sb, st, u }) => {
+const getAllVideos = async ({ p, l, q, sb, st, user }) => {
+  console.log("u",user);
+  
   try {
-    const query = q ? q : null;
-    const page = p ? p : 1;
-    const limit = l ? l : 2;
-    const sortBy = sb ? sb : null;
-    const sortType = st ? st : null;
-    const userId = u ? u : null;
+    const page = p || 1;
+    const limit = l || 2;
+    const query = q || null;
+    const sortBy = sb || null;
+    const sortType = st || null;
+    const userId = user || null;
 
     const token = localStorage.getItem("accessToken");
-// console.log(token);
 
-    const response = await axios.get(
-      `/api/v1/videos/getallvideos`,
-      { param: { page, limit, query, sortBy, sortType, userId } },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const params = { page, limit };
+    if (query) params.query = query;
+    if (sortBy) params.sortBy = sortBy;
+    if (sortType) params.sortType = sortType;
+    if (userId) params.userId = userId;
+    console.log("params",params);
+    
+
+    const response = await axios.get(`/api/v1/videos/getallvideos`, {
+      params,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("response", response);
     return response.data;
   } catch (error) {
     console.error("Error fetching all videos data:", error);
   }
 };
+
 
 
 

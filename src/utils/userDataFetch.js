@@ -26,7 +26,7 @@ const loginUser = async(formData)=>{
         const response = await axios.post(`/api/v1/users/login` , formData , {
             withCredentials: true, // Include cookies
           });  
-        // console.log("response",response.data);
+        console.log("response",response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching login data:', error);
@@ -104,7 +104,7 @@ const getCurrentUser = async () => {
 
 
 
-const userId = async (userId) => {
+const userIdowner = async (userId) => {
   try {
     console.log("userId:", userId);
     
@@ -112,7 +112,7 @@ const userId = async (userId) => {
     const response = await axios.get(`/api/v1/users/m/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });  
-    console.log("Response data:", response);
+    // console.log("Response data:", response);
     return response.data.data;
   } catch (error) {
     console.error('Error fetching user data:', error);
@@ -137,10 +137,14 @@ const getUserById = async (userId) => {
   }
 };
 
+
+
 const updateAccountDetails = async(data)=>{
     try {
+      console.log("fetch data",data);
+      
         const token = localStorage.getItem('accessToken');
-        const response = await axios.patch(`/api/v1/users/update-account` , data ,{ headers:
+        const response = await axios.patch(`/api/v1/users/update-account`, data ,{ headers:
            {
              Authorization: `Bearer ${token}`
             }
@@ -155,8 +159,9 @@ const updateAccountDetails = async(data)=>{
 
 const updateUserAvatar = async (data)=>{
     try {
+      console.log("cover data",data);
       const token = localStorage.getItem('accessToken');
-        const response = await axios.patch(`/api/v1/users/avatar` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.patch(`/api/v1/users/update-avatar` , data ,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log(response.data);
         return response.data;
       } catch (error) {
@@ -166,6 +171,8 @@ const updateUserAvatar = async (data)=>{
 
 const updateCoverImage = async (data) => {
   try {
+    console.log("cover data",data);
+    
     const token = localStorage.getItem('accessToken');
     
     const response = await axios.patch(
@@ -231,7 +238,7 @@ const getUserChannedetails=async(username)=>
 
 
 
-const getUserChannelProfilebyusername = async (username) => {
+const getUserChannelsdetailsbyuserid = async (videoid) => {
   // console.log("username for channelprofile",username);
   try {
     const token = localStorage.getItem('accessToken');
@@ -240,7 +247,7 @@ const getUserChannelProfilebyusername = async (username) => {
       throw new Error('Access token not found');
     }
 
-    const response = await axios.get(`/api/v1/users/only/${username}`, {
+    const response = await axios.get(`/api/v1/users/only/${videoid}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -282,6 +289,6 @@ export {
     refreshAccessToken,
     getUserById,
     getUserChannedetails,
-    getUserChannelProfilebyusername,
-    userId
+    getUserChannelsdetailsbyuserid,
+    userIdowner
 }

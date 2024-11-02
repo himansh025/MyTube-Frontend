@@ -27,11 +27,12 @@ function Container() {
     if (user1) {
       try {
         const user = await getUserChannelProfile(user1?.username);
-      //  console.log("userss",user);
+       console.log("userss",user);
        
-        if (user?.data) {
-          data = await getAllVideos({ p: 1, l: 10,user:user.data._id});
-          // console.log(" is data",data);
+        if (user) {
+          const userdata= user.data?._id
+          data = await getAllVideos({ p: 1, l: 10,user:userdata});
+          console.log(" is data",data);
           
           setVideoList(data?.data.docs || []);
         }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Comment from './Comment'
 import { useParams } from 'react-router-dom'
-import { userId } from '../utils/userDataFetch';
+import { userIdowner } from '../utils/userDataFetch';
 import { getVideoComments } from '../utils/comment.data.fetch';
 
 const CommentList = ({ commentList, videoId }) => {
@@ -37,7 +37,7 @@ const CommentList = ({ commentList, videoId }) => {
     try {
       // console.log("ownerid",ownerId);
       
-      const owner = await userId(ownerId);
+      const owner = await userIdowner(ownerId);
       console.log("owner ye hai kya",owner.fullname);
       return owner;
     } catch (error) {

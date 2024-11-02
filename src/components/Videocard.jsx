@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getUserById } from "../utils/userDataFetch";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { userIdowner } from "../utils/userDataFetch";
+// import { useSelector } from "react-redux";
 
 function Videocard({ data }) {
   const [title, setTitle] = useState(data?.title || "Untitled");
   const [timeline, setTimeline] = useState("");
   const [videoOwner, setVideoOwner] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const user = useSelector((state) => state.auth.user);
-  const navigate = useNavigate();
-  // const [videoData,setVideodata]= useState();
-  
-
-// console.log("videocard data",data);
+  // const user = useSelector((state) => state.auth.user);
+  // const navigate = useNavigate();
+// console.log("is data",data);
 
 
   const handleWindowResize = () => {
@@ -37,19 +34,22 @@ function Videocard({ data }) {
     return "Just now";
   }
 
-  // async function getOwner(userId) {
-  //   try {
-  //     console.log(userId,"hai toh");
+  async function getOwner(userId) {
+    try {
+      // console.log(userId,"hai toh");
       
-  //     const owner = await getUserById(userId);
-  //     console.log("owner",owner);
-  //     setVideoOwner(owner?.data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch video owner:", error);
-  //   }
-  // }
+      const owner = await userIdowner(userId);
+      // console.log("owner",owner?.fullname);
+      setVideoOwner(owner);
+    } catch (error) {
+      console.error("Failed to fetch video owner:", error);
+    }
+  }
+ 
+
   useEffect(() => {
-    setVideoOwner(data);
+    // setVideoOwner(data);
+    getOwner(data.owner)
    
     if (data?.createdAt) {
       const dateObject = new Date(data.createdAt);
@@ -67,8 +67,7 @@ function Videocard({ data }) {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, [data]);
-// console.log("video owner",videoOwner);
-// console.log("videoid",data._id);
+
 
 
   return (
@@ -76,8 +75,8 @@ function Videocard({ data }) {
       <Link to={`/videos/${data._id}`}>
         <div className="w-full overflow-hidden h-40 rounded-2xl">
           <img  
-            src={videoOwner?.thumbnail }
-            alt={videoOwner?.title || "Video Thumbnail"}
+            src={data?.thumbnail }
+            alt={data?.title || "Video Thumbnail"}
             className="object-cover w-full h-full"
           />
         </div>
@@ -105,7 +104,7 @@ function Videocard({ data }) {
             </div>
 
             <div className="text-gray-500 text-sm font-bold pt-1">
-              {data?.fullName || "Unknown Owner"}
+              {videoOwner?.fullname|| "Unknown Owner"}
             </div>
             <div className="flex text-gray-500 text-sm gap-3">
               <div>{data?.views || 0} views</div>

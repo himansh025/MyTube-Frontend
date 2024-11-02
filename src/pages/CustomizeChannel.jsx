@@ -16,13 +16,15 @@ const CustomizeChannel = () => {
   // console.log("user", user);
 
   const updateDetails = (data) => {
-    if (data.fullName === "") {
-      data.fullName = user.fullName;
+    if (data.fullname === "") {
+      data.fullname = user.fullname;
     }
     if (data.email === "") {
       data.email = user.email;
     }
     const dataInfo = async () => {
+      console.log("data",data);
+      
       const accountInfo = await updateAccountDetails(data);
       if (accountInfo) {
         navigate(`/creatorProfile/${user.username}`);
@@ -46,7 +48,7 @@ const CustomizeChannel = () => {
             placeholder="Enter your full name"
             className="flex-1 p-2 border border-gray-300 rounded-md"
             type="text"
-            name="fullName"
+            name="fullname"
             register={register}
             required
           />

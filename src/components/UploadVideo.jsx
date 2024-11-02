@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { publishVideo } from '../utils/videoDataFetch.js';
+import ShowToast from './ShowToast.jsx';
+
 
 const VideoUploadComponent = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -12,7 +14,9 @@ const VideoUploadComponent = () => {
     console.log("Thumbnail:", data.thumbnail[0]);
 
     const videoData = await publishVideo(data);
-    console.log(videoData);
+    // console.log(videoData);
+ShowToast("upload","video")
+
   };
 
   const handleThumbnailChange = (e) => {

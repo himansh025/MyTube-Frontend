@@ -3,11 +3,11 @@ import Button from "../components/Button";
 import { FaUserEdit } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { Link, Outlet, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import ShowToast from "../components/ShowToast";
+
 import {
   getCurrentUser,
   getUserChannelProfile,
-  getUserChannelProfilebyusername,
   updateCoverImage,
   updateUserAvatar,
 } from "../utils/userDataFetch";
@@ -17,19 +17,14 @@ const CreatorProfile = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [reload, setReload] = useState(0);
   const { username } = useParams();
-  // const user = useSelector((state) => state.auth.user);
-
-  // console.log("user at edit profile",username);
 
   const check = async (username) => {
-    // console.log("inside fnc",username);
+    if (username) {
+      const getchannelowner = await getUserChannelProfile(username);
+      if (getchannelowner.data?.username === username) {
+        setIsOwner(true);
+      }
 
-    const getchannelowner = await getUserChannelProfile(username);
-    // console.log("channel details of v owner",getchannelowner);
-    if (getchannelowner.data?.username == username) {
-      setIsOwner(true);
-    } else {
-      console.log("not happen");
     }
   };
 
@@ -44,13 +39,14 @@ const CreatorProfile = () => {
     try {
       const data = await updateUserAvatar(formData);
       if (data) setReload((prev) => prev + 1);
+      ShowToast("update","avatar")
     } catch (error) {
       console.error("Error uploading avatar:", error);
     }
   };
 
   const handleSubmitCoverImage = async () => {
-    const input = document.querySelector("#coverImage");
+    const input = document.querySelector("#coverimage");
     const file = input.files[0];
     if (!file) return;
 
@@ -60,6 +56,7 @@ const CreatorProfile = () => {
     try {
       const data = await updateCoverImage(formData);
       if (data) setReload((prev) => prev + 1);
+      ShowToast("update","coverimage")
     } catch (error) {
       console.error("Error uploading coverImage:", error);
     }
@@ -74,21 +71,18 @@ const CreatorProfile = () => {
 
   const fetchData = async () => {
     try {
-      // console.log(username);
-
-      const response = await getUserChannelProfilebyusername(username);
-      // console.log("response hai", response);
-
-      setProfileData(response.data);
-      const owner = getCurrentUser();
-      if (owner && owner._id === response.data._id) {
-        setIsOwner(true);
+      if (username) {
+        const response = await getUserChannelProfile(username);
+        setProfileData(response.data);
+        const owner = getCurrentUser();
+        if (owner && owner._id === response.data._id) {
+          setIsOwner(true);
+        }
       }
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
   };
-  // console.log("isowner",isOwner);
 
   useEffect(() => {
     fetchData();
@@ -97,40 +91,48 @@ const CreatorProfile = () => {
 
   const options = [
     { name: "Videos", slug: "videos" },
-    // { name: "Tweets", slug: "tweets" },
-    // { name: "Playlists", slug: "playlists" },
   ];
 
   return (
     <div className="w-full bg-slate-800">
-      <div className="w-full overflow-hidden max-h-44 relative">
-        <img
-          className="w-full object-cover h-full"
-          src={profileData?.coverimage || "/path/to/default/cover.jpg"}
-          alt="Cover"
-        />
+      <div
+        className="w-full mt-5 overflow-hidden  h-44 relative">
+        {profileData?.coverimage ? (
+          <img
+            className="w-full object-cover  h-full"
+            src={profileData.coverimage}
+            alt="Cover  image"
+          />
+        ) : (
+          <div className="w-full h-full mt-6 flex items-center justify-center text-white font-semibold">
+            No Cover Image
+          
+          </div>
+        )}
+
         {isOwner && (
           <div
             onClick={openCoverImageUpload}
-            className="absolute h-3 bottom-5  bg-red-500 mb-10 right-5 text-sm cursor-pointer"
+            className="absolute h-3 bottom-5 right-5 text-sm cursor-pointer flex items-center space-x-2"
           >
             <FaUserEdit />
-            <span className="text-white  bg-blue-950 p-1 font-semibold  rounded-lg">
+            <span className="text-white mt-3 bg-blue-950 p-2 font-semibold rounded-lg">
               Edit
             </span>
-          </div>
-        )}
+
         <form hidden>
           <input
             type="file"
-            id="coverImage"
+            id="coverimage"
             accept="image/*"
             onChange={handleSubmitCoverImage}
-          />
+            />
         </form>
+            </div>
+          )}
       </div>
 
-      <div className="lg:flex pt-0 ">
+      <div className="lg:flex pt-0">
         <div className="w-[200px] h-[200px] border-blue-950 border-solid border-2 overflow-hidden rounded-full m-5 relative">
           <img
             className="w-full object-cover"
@@ -143,16 +145,16 @@ const CreatorProfile = () => {
               className="bg-gray-600 p-1 rounded-xl absolute bottom-5 right-3 text-2xl cursor-pointer"
             >
               <MdEdit />
-            </div>
-          )}
           <form hidden>
             <input
               type="file"
               id="avatar"
               accept="image/*"
               onChange={handleSubmitAvatar}
-            />
+              />
           </form>
+              </div>
+            )}
         </div>
 
         <div className="flex-1">
@@ -181,7 +183,7 @@ const CreatorProfile = () => {
         </div>
       </div>
 
-      <div className="flex justify-around  text-white text-xl font-semibold py-3">
+      <div className="flex justify-around text-white text-xl font-semibold py-3">
         {options.map((option) => (
           <Link
             key={option.slug}
