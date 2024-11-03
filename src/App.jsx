@@ -18,7 +18,7 @@ function App() {
         </div>
       </div>
 
-      <div className="block md:hidden">
+      <div className="block max-w-screen-md:hidden">
         <Bottomside />
       </div>
     </div>

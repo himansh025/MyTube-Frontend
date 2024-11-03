@@ -1,15 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import apiUrl from './src/config';
 
 export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
       '/api': {
-        target: apiUrl,
+        target: import.meta.env.VITE_API_URL,
         changeOrigin: true,
-        secure: false, // Set to false for local dev, especially if using HTTP
+        secure: true,
       },
     },
   },
