@@ -1,8 +1,10 @@
 import axios from "axios";
+// import apiUrl from '../config';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Fetch all videos with pagination and query options
-const getAllVideos = async ({ p, l, q, sb, st, user }) => {
-  console.log("u",user);
+const getAllVideos = async ({ p, l, q, sb, st, userId }) => {
+  console.log("u",userId);
   
   try {
     const page = p || 1;
@@ -10,7 +12,7 @@ const getAllVideos = async ({ p, l, q, sb, st, user }) => {
     const query = q || null;
     const sortBy = sb || null;
     const sortType = st || null;
-    const userId = user || null;
+    // const userId = user || null;
 
     const token = localStorage.getItem("accessToken");
 
@@ -18,11 +20,14 @@ const getAllVideos = async ({ p, l, q, sb, st, user }) => {
     if (query) params.query = query;
     if (sortBy) params.sortBy = sortBy;
     if (sortType) params.sortType = sortType;
-    if (userId) params.userId = userId;
+    if (userId) {
+      params.userId = userId;
+      params.filterByUser = true;  // This flag tells the API to filter by user
+    }
     console.log("params",params);
     
 
-    const response = await axios.get(`/api/v1/videos/getallvideos`, {
+    const response = await axios.get(`${apiUrl}/api/v1/videos/getallvideos`, {
       params,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -44,7 +49,7 @@ const getUserChannelProfile = async (username) => {
   try {
     console.log("username",username);
     
-    const response = await axios.get(`/api/v1/users/current-user/${username}`);
+    const response = await axios.get(`${apiUrl}/api/v1/users/current-user/${username}`);
     console.log("response",response);
     
     return response.data;
@@ -56,7 +61,7 @@ const getUserChannelProfile = async (username) => {
 
 const incrementView = async (videoId) => {
   try {
-    const response = await fetch(`/api/v1/videos/incrementView/${videoId}`, { method: 'POST' });
+    const response = await fetch(`${apiUrl}/api/v1/videos/incrementView/${videoId}`, { method: 'POST' });
     if (!response.ok) throw new Error('Failed to increment view count');
     return response.json();
   } catch (error) {
@@ -69,7 +74,7 @@ const incrementView = async (videoId) => {
   // console.log("video fetch id",videoId);
   
   try {
-    const response =await axios.get(`/api/v1/videos/getvideobyid/${videoId}`);
+    const response =await axios.get(`${apiUrl}/api/v1/videos/getvideobyid/${videoId}`);
     // console.log( "single v",response);
     
     return response;
@@ -98,7 +103,7 @@ formData.append("description", data.description);
 //     console.log("Videofile:", formData.videofile[0]);
 // console.log("Thumbnail:", formData.thumbnail[0]);
 
-    const response = await axios.post(`/api/v1/videos/addvideo`, formData, {
+    const response = await axios.post(`${apiUrl}/api/v1/videos/addvideo`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         // 'Content-Type': 'multipart/form-data' // Important for file uploads
@@ -119,7 +124,7 @@ formData.append("description", data.description);
 
  const updateThumbnail = async (videoId, thumbnailData) => {
   try {
-    const response = await fetch(`/api/v1/videos/${videoId}/thumbnail`, {
+    const response = await fetch(`${apiUrl}/api/v1/videos/${videoId}/thumbnail`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -135,7 +140,7 @@ formData.append("description", data.description);
 };
  const updateVideo = async (videoId, videoData) => {
   try {
-    const response = await fetch(`/api/v1/videos/${videoId}`, {
+    const response = await fetch(`${apiUrl}/api/v1/videos/${videoId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   const status = useSelector((state) => state.auth.status);
   const user = useSelector((state) => state.auth.user);
-
+  console.log("is user? for sidebar",user);
   return (
     <div className="fixed h-screen w-24 left-0 z-10 bg-gray-950">
       <div className="text-white text-3xl flex flex-col gap-5 w-full p-2 items-center">

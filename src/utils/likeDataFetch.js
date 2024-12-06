@@ -1,31 +1,32 @@
 import axios from 'axios'
 import { token} from '../constants'
-
+// import apiUrl from '../config';
+const apiUrl = import.meta.env.VITE_API_URL;
 const toggleVideoLike = async(videoId)=>{
     console.log("toggle video",videoId);
     
     try {
-        const response = await axios.post(`/api/v1/likes/toggle/${videoId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.post(`${apiUrl}/api/v1/likes/toggle/${videoId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {
-        console.error('Error fetching ctoggle video like:', error);
+        console.error('Error fetching toggle video like:', error);
     }
 }
 
 const toggleCommentLike = async(commentId)=>{
     try {
-        const response = await axios.get(`/api/v1/like/toggleCommentLike/${commentId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`${apiUrl}/api/v1/like/toggleCommentLike/${commentId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {
-        console.error('Error fetching ctoggle comment like:', error);
+        console.error('Error fetching toggle comment like:', error);
     }
 }
 
 const toggleTweetLike = async(tweetId)=>{
     try {
-        const response = await axios.get(`/api/v1/like/toggleTweetLike/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`${apiUrl}/api/v1/like/toggleTweetLike/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
       } catch (error) {
@@ -35,7 +36,7 @@ const toggleTweetLike = async(tweetId)=>{
 
 const getLikedVideos = async()=>{
     try {
-        const response = await axios.get(`/api/v1/like/getLikedVideos`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`${apiUrl}/api/v1/like/getLikedVideos`,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log(response.data);
         return response.data;
       } catch (error) {
@@ -47,7 +48,7 @@ const getLikesOfVideoById = async(videoId)=>{
     // console.log("videoid like fetch",videoId);
     
     try {
-        const response = await axios.get(`/api/v1/likes/likedvideosbyid/${videoId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`${apiUrl}/api/v1/likes/likedvideosbyid/${videoId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         // console.log("backend fetch req of like",response.data);
         return response.data;
     } catch (error) {
@@ -57,7 +58,7 @@ const getLikesOfVideoById = async(videoId)=>{
 
 const getLikesOfCommentById = async(commentId)=>{
     try {
-        const response = await axios.get(`/api/v1/like/getLikesOfCommentById/${commentId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`${apiUrl}/api/v1/like/getLikesOfCommentById/${commentId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
     } catch (error) {
@@ -68,7 +69,7 @@ const getLikesOfCommentById = async(commentId)=>{
 const getLikesOfTweetById = async(tweetId)=>{
     try {
         // console.log(tweetId)
-        const response = await axios.get(`/api/v1/like/getLikesOfTweetById/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
+        const response = await axios.get(`${apiUrl}/api/v1/like/getLikesOfTweetById/${tweetId}`,{ headers: { Authorization: `Bearer ${token}`}});  
         console.log(response.data);
         return response.data;
     } catch (error) {

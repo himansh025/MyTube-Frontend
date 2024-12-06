@@ -12,6 +12,8 @@ const Bottomside = () => {
   const status = useSelector((state) => state.auth.status);
   const user = useSelector((state) => state.auth.user);
   const [profile, setProfile] = useState("");
+console.log("is user? for bottomside",user);
+
 
   useEffect(() => {
     if (user && user.avatar) {
@@ -52,7 +54,7 @@ const Bottomside = () => {
                   alt={`${user.username}'s avatar`}
                 />
               </Link>
-              <div className="font-semibold text-sm">{user.username}</div>
+              <div className="font-semibold text-sm">{user.fullname}</div>
 
           
             </div>

@@ -28,10 +28,14 @@ function Login() {
 
     try {
       const userdata = await loginUser(data);
+      console.log("userlogin",userdata);
+      
       if (userdata) {
         localStorage.setItem('accessToken', userdata.data.accesstoken);
         localStorage.setItem('refreshToken', userdata.data.refreshtoken);
         const user = userdata.data.user;
+        console.log("user",user);
+        
         dispatch(login({ user }));
         navigate('/');
       } else {

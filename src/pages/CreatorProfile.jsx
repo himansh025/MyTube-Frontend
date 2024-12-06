@@ -21,6 +21,8 @@ const CreatorProfile = () => {
   const check = async (username) => {
     if (username) {
       const getchannelowner = await getUserChannelProfile(username);
+      console.log("chenlown",getchannelowner);
+      
       if (getchannelowner.data?.username === username) {
         setIsOwner(true);
       }
@@ -90,7 +92,7 @@ const CreatorProfile = () => {
   }, [username, reload]);
 
   const options = [
-    { name: "Videos", slug: "videos" },
+    { name: "Videos", slug: "my-videos" },
   ];
 
   return (

@@ -10,6 +10,7 @@ import Login from "./components/Login.jsx";
 import Home from "./pages/Home.jsx";
 import VideoPage from "./pages/VideoPage.jsx";
 import Container from "./components/Container.jsx";
+import MyVideos from "./components/MyVideos.jsx";
 import CreatorProfile from "./pages/CreatorProfile.jsx";
 import CustomizeChannel from "./pages/CustomizeChannel.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
                 path: "videos", // No leading slash here
                 element: <Container />,
               },
+              {
+                path: "my-videos",
+                element: <MyVideos />, // This fetches only the authenticated user's videos
+              },
             
               {
                 path: "tweets", // No leading slash here
@@ -100,7 +105,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "videos/:videoId",
+        path: "videos",
         element: <VideoPage />,
       },
       {

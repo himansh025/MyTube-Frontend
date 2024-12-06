@@ -27,12 +27,12 @@ function Container() {
     if (user1) {
       try {
         const user = await getUserChannelProfile(user1?.username);
-       console.log("userss",user);
+       console.log("userss ",user);
        
         if (user) {
           const userdata= user.data?._id
           data = await getAllVideos({ p: 1, l: 10,user:userdata});
-          console.log(" is data",data);
+          console.log(" is data with user",data);
           
           setVideoList(data?.data.docs || []);
         }
@@ -42,6 +42,8 @@ function Container() {
     } else {
       try {
         data = await getAllVideos({ p: 1, l: 10 });
+        console.log(" is data without user",data);
+
         setVideoList(data?.data?.docs || []);
       } catch (error) {
         console.error("Error fetching all videos", error);
