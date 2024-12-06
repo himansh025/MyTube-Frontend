@@ -21,19 +21,31 @@ const registerUser = async (formData) => {
 
 
 
-const loginUser = async(formData)=>{
-    try {
+const loginUser = async (formData) => {
+  try {
+    console.log("Login form data:", formData);
 
-        // console.log("g",formData)
-        const response = await axios.post(`${apiUrl}/api/v1/users/login`, formData , {
-            withCredentials: true, // Include cookies
-          });  
-        console.log("response",response.data);
-        return response.data;
-      } catch (error) {
-        console.error('Error fetching login data:', error);
+    const response = await axios.post(
+      `${apiUrl}/api/v1/users/login`, 
+      formData, 
+      { withCredentials: true }
+    );
+
+    console.log("Login response:", response.data);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("Server error:", error.response.data);
+      alert(error.response.data.message || "An error occurred. Please try again.");
+    } else if (error.request) {
+      console.error("No response from server:", error.request);
+      alert("No response from the server. Please check your connection.");
+    } else {
+      console.error("Error in request setup:", error.message);
+      alert("An unexpected error occurred.");
     }
-}
+  }
+};
 
 const logoutUser = async()=>{
     try {
