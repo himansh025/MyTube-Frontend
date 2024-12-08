@@ -166,7 +166,7 @@ const CreatorProfile = () => {
           <div className="flex gap-3 text-white px-5 py-3 flex-wrap">
             <div>@{(profileData?.username || "username").toUpperCase()}</div>•{" "}
             <div>{profileData?.subscriberscount || 0} subscribers</div>•{" "}
-            <div>{profileData?.videos?.length || 0} videos</div>
+            {/* <div>{profileData?.videos?.length || 0} videos</div> */}
           </div>
 
           <div className="px-5 flex gap-5 flex-wrap">
