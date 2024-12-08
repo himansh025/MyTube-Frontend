@@ -14,7 +14,7 @@ const VideoUploadComponent = () => {
     console.log("Thumbnail:", data.thumbnail[0]);
 
     const videoData = await publishVideo(data);
-    // console.log(videoData);
+    console.log(videoData);
 ShowToast("upload","video")
 
   };
