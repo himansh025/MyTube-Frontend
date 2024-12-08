@@ -31,7 +31,7 @@ function Container() {
        
         if (user) {
           const userdata= user.data?._id
-          data = await getAllVideos({ p: 1, l: 10,user:userdata});
+           data = await getAllVideos({ p: 1, l: 10, userdata,random: "true" });
           console.log(" is data with user",data);
           
           setVideoList(data?.data.docs || []);
@@ -41,7 +41,7 @@ function Container() {
       }
     } else {
       try {
-        data = await getAllVideos({ p: 1, l: 10 });
+         data = await getAllVideos({ p: 1, l: 10, random: "true" });
         console.log(" is data without user",data);
 
         setVideoList(data?.data?.docs || []);

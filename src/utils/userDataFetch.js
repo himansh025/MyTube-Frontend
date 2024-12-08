@@ -100,7 +100,7 @@ const getCurrentUser = async () => {
     }
     
     // Make the API request with authorization header
-    const response = await axios.get('${apiUrl}/api/v1/users/current-user', {
+    const response = await axios.get(`${apiUrl}/api/v1/users/current-user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';  // Import the cookies library
 
@@ -6,22 +6,26 @@ function Logout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Clear local storage
+    // Clear local storage items
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('accessToken');
 
-    // Remove tokens from cookies
-    Cookies.remove('accesstoken');
-    Cookies.remove('refreshtoken');
+    // Remove cookies by specifying path and domain (if needed)
+    Cookies.remove('accessToken', { path: '/' });  // Added path
+    Cookies.remove('accesstoken', { path: '/' });  // Corrected name and path
+    Cookies.remove('refreshToken', { path: '/' }); // Added path
 
-    // Navigate to login page after clearing tokens
+    // If you have secure cookies or specific domain setup, include those:
+    Cookies.remove('accessToken', { path: '/', domain: 'localhost' });
+    Cookies.remove('refreshToken', { path: '/', domain: 'localhost' });
+
+    // Navigate to the login page after clearing tokens
     navigate("/login");
-  }, [navigate]); // Added the dependency array to ensure it runs only once
+  }, [navigate]); // Dependency array to run only once when the component mounts
 
   return (
     <div>
-      {/* You can add a logout message or loader if desired */}
       Logging out...
     </div>
   );

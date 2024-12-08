@@ -63,7 +63,7 @@ const router = createBrowserRouter([
                 path: "my-videos",
                 element: <MyVideos />, // This fetches only the authenticated user's videos
               },
-            
+                 
               {
                 path: "tweets", // No leading slash here
                 element: <CommentList />,
@@ -86,6 +86,11 @@ const router = createBrowserRouter([
             path: "uploadVideo",
             element: <UploadVideo />,
           },
+          {
+            path: "updatevideo/:id", // Assuming the videoId will be passed in the URL
+            element: <UpdateVideo />,
+          }
+,          
           {
             path: "postTweet",
             element: <UploadTweet />,

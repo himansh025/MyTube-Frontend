@@ -3,16 +3,13 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 // Fetch all videos with pagination and query options
-const getAllVideos = async ({ p, l, q, sb, st, userId }) => {
-  console.log("u",userId);
-  
+const getAllVideos = async ({ p, l, q, sb, st, userId, random }) => {
   try {
     const page = p || 1;
     const limit = l || 2;
     const query = q || null;
     const sortBy = sb || null;
     const sortType = st || null;
-    // const userId = user || null;
 
     const token = localStorage.getItem("accessToken");
 
@@ -22,10 +19,9 @@ const getAllVideos = async ({ p, l, q, sb, st, userId }) => {
     if (sortType) params.sortType = sortType;
     if (userId) {
       params.userId = userId;
-      params.filterByUser = true;  // This flag tells the API to filter by user
+      params.filterByUser = true;
     }
-    console.log("params",params);
-    
+    if (random) params.random = random; // Add the random flag
 
     const response = await axios.get(`${apiUrl}/api/v1/videos/getallvideos`, {
       params,
@@ -34,7 +30,6 @@ const getAllVideos = async ({ p, l, q, sb, st, userId }) => {
       },
     });
 
-    console.log("response", response);
     return response.data;
   } catch (error) {
     console.error("Error fetching all videos data:", error);
@@ -47,10 +42,10 @@ const getAllVideos = async ({ p, l, q, sb, st, userId }) => {
 // Fetch a user's channel profile by username
 const getUserChannelProfile = async (username) => {
   try {
-    console.log("username",username);
+    // console.log("username",username);
     
     const response = await axios.get(`${apiUrl}/api/v1/users/current-user/${username}`);
-    console.log("response",response);
+    // console.log("response",response);
     
     return response.data;
 
@@ -83,6 +78,7 @@ const incrementView = async (videoId) => {
     return null;
   }
 };
+
 const publishVideo = async (data) => {
   const token = localStorage.getItem("accessToken");
   // console.log("Token:", token);
@@ -106,7 +102,7 @@ formData.append("description", data.description);
     const response = await axios.post(`${apiUrl}/api/v1/videos/addvideo`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        // 'Content-Type': 'multipart/form-data' // Important for file uploads
+        'Content-Type': 'multipart/form-data' // Important for file uploads
       }
     });
 
@@ -140,7 +136,9 @@ formData.append("description", data.description);
 };
  const updateVideo = async (videoId, videoData) => {
   try {
-    const response = await fetch(`${apiUrl}/api/v1/videos/${videoId}`, {
+    console.log("data",videoData,videoId);
+    
+    const response = await fetch(`${apiUrl}/api/v1/videos/updatevideo/${videoId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ const Navbar2 = () => {
       {/* Left section with logo */}
       <div className="flex items-center">
         <CgTv className="text-red-600 text-3xl" />
-        <span className="ml-2 text-xl font-bold text-red-600">WatchTv</span>
+        <span className="ml-2 text-xl font-bold text-red-600">MyTube</span>
       </div>
 
       {/* Search bar */}

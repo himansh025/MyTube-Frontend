@@ -12,7 +12,11 @@ const CommentList = ({ commentList, videoId }) => {
   useEffect(() => {
     const getList = async () => {
       try {
+        console.log(videoId,"v");
+        
         const data = await getVideoComments(videoId);
+        console.log(data,"cmt");
+        
         const commentsWithOwners = await Promise.all(
           data.data.map(async (comment) => {
             const owner = await fetchOwnerName(comment.owner);

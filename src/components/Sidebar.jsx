@@ -31,6 +31,9 @@ const Sidebar = () => {
               <div className="font-semibold text-sm">Upload</div>
             </div>
 
+
+       
+
             {/* Subscribed */}
             <div className="flex flex-col items-center mb-4">
               <Link to="/subscribed">

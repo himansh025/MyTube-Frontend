@@ -20,7 +20,7 @@ const getUserChannelSubscribers = async(channelId)=>{
         
         const token = localStorage.getItem('accessToken');
         const response = await axios.get(`${apiUrl}/api/v1/subs/getsubs/${channelId}`  ,{ headers: { Authorization: `Bearer ${token}`}});  
-        // console.log(response.data);
+        console.log("list of subs",response.data);
         return response.data;
       } catch (error) {
         console.error('Error fetching get user channel subscribers:', error);

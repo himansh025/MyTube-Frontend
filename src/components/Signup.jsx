@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Inputfield from './Inputfield';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
@@ -6,14 +6,19 @@ import { registerUser } from '../utils/userDataFetch';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
+import { load, stopLoad } from '../store/reloadSlice';
+import { toast } from 'react-toastify';
 
 function Signup() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
     const formData = new FormData();
+    setLoading(true);
+    dispatch(load());
 
     formData.append('username', data.username);
     formData.append('email', data.email);
@@ -27,65 +32,83 @@ function Signup() {
       formData.append('coverimage', data.coverimage[0]);
     }
 
-    const userData = await registerUser(formData);
+    try {
+      const userData = await registerUser(formData);
 
-    if (userData) {
-      localStorage.setItem('accessToken', userData.data.accesstoken);
-      localStorage.setItem('refreshToken', userData.data.refreshtoken);
-      const user = userData.data;
-      const obj = {
-        user,
-      };
-      dispatch(login(obj));
-      navigate('/login');
+      if (userData) {
+        localStorage.setItem('accessToken', userData.data.accesstoken);
+        localStorage.setItem('refreshToken', userData.data.refreshtoken);
+
+        const user = userData.data;
+        const obj = { user };
+        dispatch(login(obj));
+
+        toast.success('Signup successful! Redirecting to login...');
+
+        setTimeout(() => {
+          setLoading(false);
+          navigate('/login');
+        }, 1500);
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || 'Signup failed. Please try again.';
+      toast.error(errorMessage);
+
+      setLoading(false);
+      dispatch(stopLoad());
     }
   };
 
-  const handleclick = () => {
-    navigate('/login');
-  };
-
   return (
-    <div className="min-h-screen flex items-center  justify-center bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
-      <div className="p-8 w-full md:w-[550px] bg-gray-900 text-white mx-auto rounded-2xl shadow-lg">
-        <h2 className="text-center text-3xl font-bold mb-6">Create Your Account</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <Inputfield
-            placeholder="Enter your username"
-            name="username"
-            type="text"
-            label="Username:"
-            register={register}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none"
-          />
-          <Inputfield
-            placeholder="Enter your email"
-            name="email"
-            type="email"
-            label="Email:"
-            register={register}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none"
-          />
-          <Inputfield
-            placeholder="Enter your full name"
-            name="fullname"
-            type="text"
-            label="Full Name:"
-            register={register}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none"
-          />
-          <Inputfield
-            placeholder="Enter your password"
-            name="password"
-            type="password"
-            label="Password:"
-            register={register}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none"
-          />
+<div className="flex items-center justify-center bg-slate-600 p-4" style={{ height: 'calc(100vh - 50px)' }}>
+  <div className="p-6 w-full md:w-[400px] bg-gray-900 text-white mx-auto rounded-2xl shadow-lg max-h-[700px] overflow-auto">
+    <h2 className="text-center text-2xl font-thin mb-6">Create Your Account</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+        <Inputfield
+  placeholder="Enter your username"
+  name="username"
+  type="text"
+  label="Username:"
+  register={register}
+  required
+  className="w-full px-3 py-1 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none text-sm"
+  labelClassName="text-xs" 
+/>
+
+<Inputfield
+  placeholder="Enter your email"
+  name="email"
+  type="email"
+  label="Email:"
+  register={register}
+  required
+  className="w-full px-3 py-1 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none text-sm"
+  labelClassName="text-xs" 
+/>
+
+<Inputfield
+  placeholder="Enter your full name"
+  name="fullname"
+  type="text"
+  label="Full Name:"
+  register={register}
+  required
+  className="w-full px-3 py-1 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none text-sm"
+  labelClassName="text-xs" 
+/>
+
+<Inputfield
+  placeholder="Enter your password"
+  name="password"
+  type="password"
+  label="Password:"
+  register={register}
+  required
+  className="w-full px-3 py-1 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none text-sm"
+  labelClassName="text-xs" 
+/>
+
           <Inputfield
             placeholder="Upload your avatar"
             name="avatar"
@@ -93,7 +116,8 @@ function Signup() {
             label="Avatar:"
             register={register}
             required
-            className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none"
+            className="w-full px-3 py-1 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none text-sm"
+            labelClassName="text-xs" 
           />
           <Inputfield
             placeholder="Upload your cover image"
@@ -101,20 +125,18 @@ function Signup() {
             type="file"
             label="Cover Image:"
             register={register}
-            className="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none"
+            className="w-full px-3 py-2 rounded-lg border border-gray-600 bg-gray-800 focus:border-blue-400 focus:outline-none text-sm"
+            labelClassName="text-xs" 
           />
           <Button
-            content="Sign Up"
-            type="submit"
-            className="w-full py-3 mt-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-all duration-200 ease-in-out"
+            content={loading ? 'Loading...' : 'Sign up'}
+            disabled={loading}
+            className={`w-full px-3 py-2 mt-2 rounded-lg text-white ${
+              loading
+                ? 'bg-gray-600 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700'
+            } transition duration-200 ease-in-out`}
           />
-          <button
-            className="w-full py-2 mt-4 bg-gray-700 hover:bg-gray-800 rounded-lg text-white font-semibold transition-all duration-200 ease-in-out"
-            onClick={handleclick}
-            type="button"
-          >
-            Already have an account? Log in
-          </button>
         </form>
       </div>
     </div>
