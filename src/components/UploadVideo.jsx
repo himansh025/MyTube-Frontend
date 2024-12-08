@@ -3,20 +3,30 @@ import { useForm } from 'react-hook-form';
 import { publishVideo } from '../utils/videoDataFetch.js';
 import ShowToast from './ShowToast.jsx';
 
-
 const VideoUploadComponent = () => {
   const { register, handleSubmit, reset } = useForm();
   const [thumbnailPreview, setThumbnailPreview] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
-    console.log("Videofile:", data.videofile[0]);
-    console.log("Thumbnail:", data.thumbnail[0]);
+    setIsLoading(true); // Start loading
+    try {
+      console.log(data);
+      console.log('Videofile:', data.videofile[0]);
+      console.log('Thumbnail:', data.thumbnail[0]);
 
-    const videoData = await publishVideo(data);
-    console.log(videoData);
-ShowToast("upload","video")
+      const videoData = await publishVideo(data); // Call the API
+      console.log(videoData);
 
+      ShowToast('success', 'Video uploaded successfully!');
+      reset(); // Reset the form on success
+      setThumbnailPreview(''); // Clear the thumbnail preview
+    } catch (error) {
+      console.error('Upload failed:', error);
+      ShowToast('error', 'Failed to upload video. Please try again.');
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
   };
 
   const handleThumbnailChange = (e) => {
@@ -27,11 +37,14 @@ ShowToast("upload","video")
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10  bg-gray-900 rounded-lg border-2 border-gray-500 shadow-xl  p-2 md:p-8" >
+    <div className="max-w-lg mx-auto mt-10 bg-gray-900 rounded-lg border-2 border-gray-500 shadow-xl p-2 md:p-8">
       <h2 className="text-3xl font-extrabold mb-8 text-white text-center">Upload Your Video</h2>
-      
-      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className="bg-white p-8 rounded-lg shadow-md">
-        
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        encType="multipart/form-data"
+        className="bg-white p-8 rounded-lg shadow-md"
+      >
         {/* Video Title */}
         <div className="mb-6">
           <label className="block text-lg font-semibold mb-2 text-gray-700">Title</label>
@@ -87,9 +100,14 @@ ShowToast("upload","video")
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300 transition duration-300"
+          className={`w-full py-3 text-white font-semibold rounded-lg shadow-lg transition duration-300 ${
+            isLoading
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300'
+          }`}
+          disabled={isLoading}
         >
-          Upload Video
+          {isLoading ? 'Uploading...' : 'Upload Video'}
         </button>
       </form>
     </div>
