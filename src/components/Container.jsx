@@ -1,65 +1,60 @@
 import React, { useEffect, useState } from "react";
 import Videocard from "./Videocard";
 import { useSelector } from "react-redux";
-import { getAllVideos } from '../utils/videoDataFetch.js';
+import { getAllVideos } from "../utils/videoDataFetch.js";
 import { getUserChannelProfile } from "../utils/userDataFetch.js";
 
 function Container() {
   const [videoList, setVideoList] = useState([]);
-  // const status = useSelector((state) => state.auth.status);
+  const [loading, setLoading] = useState(true); // Loader state
   const user1 = useSelector((state) => state.auth.user);
 
-// const pagedata= async()=>{
-//   try {
-//         const data = await getAllVideos({ p: 1, l: 10 });
-//           setVideoList(data?.data?.docs || []);
-//         } catch (error) {
-//           console.error("Error fetching all videos", error);
-//         }
-// }
-// console.log("videolist ye hai",videoList);
-
-
   const pageData = async () => {
+    setLoading(true); // Start loading
     let data = [];
-    // console.log("user sgya",user1);
-    
-    if (user1) {
-      try {
+    try {
+      if (user1) {
         const user = await getUserChannelProfile(user1?.username);
-       console.log("userss ",user);
-       
         if (user) {
-          const userdata= user.data?._id
-           data = await getAllVideos({ p: 1, l: 10, userdata,random: "true" });
-          console.log(" is data with user",data);
-          
-          setVideoList(data?.data.docs || []);
+          const userdata = user.data?._id;
+          data = await getAllVideos({ p: 1, l: 10, userdata, random: "true" });
         }
-      } catch (error) {
-        console.error("Error fetching user videos", error);
+      } else {
+        data = await getAllVideos({ p: 1, l: 10, random: "true" });
       }
-    } else {
-      try {
-         data = await getAllVideos({ p: 1, l: 10, random: "true" });
-        console.log(" is data without user",data);
-
-        setVideoList(data?.data?.docs || []);
-      } catch (error) {
-        console.error("Error fetching all videos", error);
-      }
+      setVideoList(data?.data?.docs || []);
+    } catch (error) {
+      console.error("Error fetching videos", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   useEffect(() => {
     pageData();
-    // pagedata();
   }, [user1]);
 
   return (
-    <div className="w-full  h-full flex gap-7 border-2 rounded-md border-white py-4 bg-slate-800 flex-wrap mx-auto">
-      {Array.isArray(videoList) &&
-        videoList.map((video, index) => <Videocard key={index} data={video} />)}
+    <div className="w-full h-full flex flex-col items-center py-4 bg-slate-800 mx-auto">
+      {loading ? (
+        // Loader UI
+        <div className="flex justify-center items-center w-full h-screen">
+          <div className="loader">
+           <h1 className="text-white text-2xl">
+             Loading Videos
+             </h1>
+            </div>
+
+        </div>
+      ) : (
+        // Videos UI
+        <div className="w-full flex gap-7 border-2 rounded-md border-white flex-wrap">
+          {Array.isArray(videoList) &&
+            videoList.map((video, index) => (
+              <Videocard key={index} data={video} />
+            ))}
+        </div>
+      )}
     </div>
   );
 }
