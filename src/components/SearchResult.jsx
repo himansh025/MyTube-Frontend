@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import VideoCardList from './VideoCardList'
-import SeatchCard from './SeatchCard'
 import { useSelector } from 'react-redux'
 import { searchVideos } from '../utils/videoDataFetch'
 

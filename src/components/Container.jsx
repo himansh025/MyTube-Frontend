@@ -17,10 +17,10 @@ function Container() {
         const user = await getUserChannelProfile(user1?.username);
         if (user) {
           const userdata = user.data?._id;
-          data = await getAllVideos({ p: 1, l: 10, userdata, random: "true" });
+          data = await getAllVideos({ p: 1, l: 20, userdata, random: "true" });
         }
       } else {
-        data = await getAllVideos({ p: 1, l: 10, random: "true" });
+        data = await getAllVideos({ p: 1, l: 20, random: "true" });
       }
       setVideoList(data?.data?.docs || []);
     } catch (error) {
